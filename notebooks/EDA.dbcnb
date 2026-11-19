@@ -1,0 +1,430 @@
+cells:
+  - kind: 2
+    languageId: sql
+    value: "SELECT COUNT(*)\r\nFROM stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT *\r\nFROM stroke\r\nLIMIT 1;"
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: NULL COUNTS seqn
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT \r
+
+      \    SUM(CASE WHEN SEQN IS NULL THEN 1 WHEN SEQN = 0 THEN 1 ELSE 0 END) AS
+      nulls_seqn\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: GENDER EDA
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    SUM(CASE WHEN gender IS NULL THEN 1 ELSE 0 END) AS nulls_gender,\r
+
+      \    COUNT(DISTINCT gender) AS gender_counts\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: "Age EDA: \r\n- min, max, avg, nulls"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    MIN(age) AS min_age,\r
+
+      \    MAX(age) AS max_age,\r
+
+      \    AVG(age) AS average_age,\r
+
+      \    SUM(CASE WHEN age IS NULL THEN 1 WHEN age = 0 THEN 1 ELSE 0 END) AS
+      nulls_age,\r
+
+      \    (SELECT COUNT(*) FROM stroke WHERE age < 30) AS
+      young_patient_count,\r
+
+      \    (SELECT COUNT(*) FROM stroke WHERE age > 70) AS old_patient_count\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: "RACE:"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    race,\r
+
+      \    COUNT(*) AS count_per_race,\r
+
+      \    (SELECT COUNT(DISTINCT race) FROM stroke) AS distinct_race_count,\r
+
+      \    (SELECT COUNT(*) FROM stroke WHERE race IS NULL) AS nulls_race\r
+
+      FROM stroke\r
+
+      GROUP BY race;"
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: WEIGHT
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    SUM(CASE WHEN weight_kg IS NULL THEN 1 ELSE 0 END) AS null_weights,\r
+
+      \    SUM(CASE WHEN weight_kg = 0 THEN 1 ELSE 0 END) AS zeroes_weight,\r
+
+      \    SUM(CASE WHEN weight_kg < 40 THEN 1 ELSE 0 END) AS
+      very_low_weights,\r
+
+      \    MIN(weight_kg) AS min_weight,\r
+
+      \    MAX(weight_kg) AS max_weight,\r
+
+      \    AVG(weight_kg) AS avg_w\r
+
+      FROM stroke;\r\n"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    MIN(height_cm) AS min_h,\r
+
+      \    MAX(height_cm) AS max_h,\r
+
+      \    AVG(height_cm) AS avg_h,\r
+
+      \    SUM(CASE WHEN height_cm IS NULL THEN 1 ELSE 0 END) AS null_h,\r
+
+      \    SUM(CASE WHEN height_cm = 0 THEN 1 ELSE 0 END) AS zeroes_h,\r
+
+      \    SUM(CASE WHEN height_cm < 100 THEN 1 ELSE 0 END) AS very_low_h,\r
+
+      \    SUM(CASE WHEN height_cm > 220 THEN 1 ELSE 0 END) AS very_tall\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    MIN(bmi) AS min_bmi,\r
+
+      \    MAX(bmi) AS max_bmi,\r
+
+      \    AVG(bmi) AS average_bmi,\r
+
+      \    SUM(CASE WHEN bmi IS NULL THEN 1 ELSE 0 END) AS null_bmi,\r
+
+      \    SUM(CASE WHEN bmi = 0 THEN 1 ELSE 0 END) AS zeroes_bmi\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    bmi_category,\r
+
+      \    COUNT(*) AS counts_bmi_cats,\r
+
+      \    (SELECT SUM(CASE WHEN bmi_category IS NULL THEN 1 ELSE 0 END) FROM
+      stroke) AS null_bmi_cats\r
+
+      FROM stroke\r
+
+      GROUP BY bmi_category;\r\n"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    education,\r
+
+      \    COUNT(*) AS education_count,\r
+
+      \    (SELECT SUM(CASE WHEN education IS NULL THEN 1 ELSE 0 END) FROM
+      stroke) AS total_nulls_edu\r
+
+      FROM stroke\r
+
+      GROUP BY education;\r\n"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    marital_status,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY marital_status;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    s.marital_status,\r
+
+      \    s.employment_status,\r
+
+      \    COUNT(*) as row_count,\r
+
+      \    (SELECT COUNT(*) FROM stroke AS m\r
+
+      \    WHERE m.marital_status IS NULL) AS total_nulls_ms,\r
+
+      \    (SELECT COUNT(*) FROM stroke AS e\r
+
+      \    WHERE e.employment_status IS NULL) AS total_nulls_es\r
+
+      FROM stroke AS s\r
+
+      GROUP BY s.marital_status, s.employment_status;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    employment_status,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY employment_status;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    diabetes,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY diabetes;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT \r
+
+      \    high_cholesterol,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY high_cholesterol;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    congestive_heart_failure,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY congestive_heart_failure;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    coronary_heart_disease,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY coronary_heart_disease;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    angina,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY angina;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    heart_attack,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY heart_attack;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    cancer,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY cancer;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    thyroid_problem,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY thyroid_problem;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    liver_condition,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY liver_condition;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    kidney_disease,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY kidney_disease;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    MIN(sleep_duration_hours) AS min_sleep_dur,\r
+
+      \    MAX(sleep_duration_hours) AS max_sleep_dur,\r
+
+      \    AVG(sleep_duration_hours) AS avg_sleep_dur,\r
+
+      \    SUM(CASE WHEN sleep_duration_hours IS NULL THEN 1 ELSE 0 END) AS
+      nulls_sleep_dur,\r
+
+      \    SUM(CASE WHEN sleep_duration_hours = 0 THEN 1 ELSE 0 END) AS
+      zeroes_sleep_dur,\r
+
+      \    SUM(CASE WHEN sleep_duration_hours < 4 THEN 1 ELSE 0 END) AS
+      low_sleep_dur,\r
+
+      \    SUM(CASE WHEN sleep_duration_hours > 11 THEN 1 ELSE 0 END) AS
+      high_sleep_dur\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    MIN(sleep_bedtime) AS min_sleep_bedtime,\r
+
+      \    MAX(sleep_bedtime) AS max_sleep_bedtime,\r
+
+      \    SUM(CASE WHEN sleep_bedtime is NULL THEN 1 ELSE 0 END) AS nulls,\r
+
+      \    SUM(CASE WHEN sleep_bedtime = 0 THEN 1 ELSE 0 END) AS zeroes\r
+
+      FROM stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    sleep_bedtime,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY sleep_bedtime;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    smoking_status,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY smoking_status;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    alcohol_frequency,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY alcohol_frequency;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "SELECT\r
+
+      \    stroke,\r
+
+      \    COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY stroke;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: ""
+    metadata: {}
+metadata:
+  conn:
+    id: 49375691f731897f
+    name: stroke.db
+  database: main
