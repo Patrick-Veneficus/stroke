@@ -13,6 +13,16 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
+    value: "SELECT SEQN, COUNT(*)\r
+
+      FROM stroke\r
+
+      GROUP BY SEQN\r
+
+      HAVING COUNT(*) > 1;"
+    metadata: {}
+  - kind: 2
+    languageId: sql
     value: "SELECT \r
 
       \    SUM(CASE WHEN SEQN IS NULL THEN 1 WHEN SEQN = 0 THEN 1 ELSE 0 END) AS

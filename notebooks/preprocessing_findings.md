@@ -1,7 +1,10 @@
 ### FINDINGS
 
+- 6053
+
 ##### SEQN
 - no null values
+- no duplicates
 
 ##### gender
 - no null values
